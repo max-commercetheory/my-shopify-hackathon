@@ -1,0 +1,110 @@
+{% stylesheet %}
+  .eighties-tv {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
+  .eighties-tv__screen {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    overflow: hidden;
+  }
+
+  .eighties-tv__screen video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+
+  .eighties-tv__screen video.active {
+    display: block;
+  }
+
+  .eighties-tv[data-show-static] .tv-static {
+    display: block;
+  }
+
+  .tv-static {
+    display: none;
+  }
+
+  .eighties-tv__frame {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .eighties-tv__controls {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 2;
+    display: flex;
+    gap: 4px;
+  }
+{% endstylesheet %}
+
+<script src="{{ 'tv-player.js' | asset_url }}" type="module"></script>
+
+<eighties-tv-component class="eighties-tv" section-id="{{ section.id }}">
+  <div class="eighties-tv__screen">
+    {% if section.settings.static_video != blank %}
+      <video class="tv-static" muted loop playsinline>
+        {%- for source in section.settings.static_video.sources -%}
+          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+        {%- endfor -%}
+      </video>
+    {% endif %}
+
+    {% for block in section.blocks %}
+      {% if block.type == 'tv_channel' %}
+        {% render block %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if section.settings.tv_frame != blank %}
+    {{ section.settings.tv_frame | image_url: width: 900 | image_tag: class: 'eighties-tv__frame' }}
+  {% endif %}
+
+  <div class="eighties-tv__controls">
+    <button type="button" class="tv-control tv-control--prev">&#9664;</button>
+    <button type="button" class="tv-control tv-control--next">&#9654;</button>
+  </div>
+</eighties-tv-component>
+
+{% schema %}
+{
+  "name": "80s TV",
+  "tag": "section",
+  "class": "section-wrapper",
+  "blocks": [
+    {"type": "tv_channel"}
+  ],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "tv_frame",
+      "label": "TV Frame (SVG)"
+    },
+    {
+      "type": "video",
+      "id": "static_video",
+      "label": "Static Video"
+    }
+  ],
+  "presets": [
+    {"name": "80s TV"}
+  ]
+}
+{% endschema %}
