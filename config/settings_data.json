@@ -9,6 +9,8 @@
  */
 {
   "current": {
+    "logo": "shopify://shop_images/Logo_NutriSoaker_FullColour.svg",
+    "logo_inverse": "shopify://shop_images/Logo_NutriSoaker_White.svg",
     "type_body_font": "inter_n4",
     "type_subheading_font": "barlow_condensed_n6",
     "type_heading_font": "barlow_condensed_n6",
@@ -37,10 +39,11 @@
     "variant_swatch_radius": 0,
     "variant_button_radius": 0,
     "variant_button_width": "equal-width-buttons",
+    "content_for_index": [],
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background": "#ffffff",
+          "background": "#91ff00",
           "foreground_heading": "#a42325",
           "foreground": "#000000",
           "primary": "#a42325",

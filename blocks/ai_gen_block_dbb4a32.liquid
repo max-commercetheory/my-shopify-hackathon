@@ -1,0 +1,175 @@
+{% doc %}
+  @prompt
+    Make a block that has a setting of ID that sets the HTML ID tag so I can use anchor links to scroll to it. 
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .anchor-block-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+    padding: {{ block.settings.padding }}px 0;
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;}
+
+  .anchor-block-content-{{ ai_gen_id }} {
+    max-width: 100%;
+  }
+
+  .anchor-block-title-{{ ai_gen_id }} {
+    margin-top: 0;
+    margin-bottom: {{ block.settings.title_spacing }}px;
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+  }
+
+  .anchor-block-text-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.text_size }}px;
+    line-height: 1.5;
+  }
+
+  @media screen and (max-width: 749px) {
+    .anchor-block-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding | divided_by: 1.5 }}px 0;
+    }
+    
+    .anchor-block-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.8 }}px;
+    }
+    
+    .anchor-block-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.text_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<div 
+  class="anchor-block-{{ ai_gen_id }}" 
+  id="{{ block.settings.custom_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="anchor-block-content-{{ ai_gen_id }}">
+    {% if block.settings.title != blank %}
+      <h2 class="anchor-block-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+    {% endif %}
+    
+    {% if block.settings.text != blank %}
+      <div class="anchor-block-text-{{ ai_gen_id }}">{{ block.settings.text }}</div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Anchor Section",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Anchor Settings"
+    },
+    {
+      "type": "text",
+      "id": "custom_id",
+      "label": "Section ID",
+      "default": "my-section",
+      "info": "Set a unique ID for this section to create anchor links (e.g., #my-section)"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Section Title"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text content",
+      "default": "<p>Add your content here. This section can be linked to using the ID you set above.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f8f8f8"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading bottom spacing",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Anchor Section"
+    }
+  ]
+}
+{% endschema %}

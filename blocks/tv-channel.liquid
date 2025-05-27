@@ -1,0 +1,34 @@
+{% if block.settings.video != blank %}
+  <video
+    class="tv-channel"
+    muted
+    playsinline
+    data-channel
+    preload="auto"
+  >
+    {%- for source in block.settings.video.sources -%}
+      <source src="{{ source.url }}" type="{{ source.mime_type }}">
+    {%- endfor -%}
+  </video>
+{% else %}
+  <div class="tv-channel placeholder">
+    <placeholder-image data-block-id="{{ section.id }}-{{ block.id }}" data-type="video"></placeholder-image>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "TV Channel",
+  "tag": null,
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video"
+    }
+  ],
+  "presets": [
+    {"name": "TV Channel"}
+  ]
+}
+{% endschema %}
